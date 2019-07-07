@@ -4,7 +4,7 @@ import { createTerminus } from '@godaddy/terminus';
 
 // Instruments
 import { app, server } from './server';
-import { getPort } from './utils';
+import { getPort, NotFoundError } from './utils';
 
 // Routers
 import { auth, users, classes, lessons } from './routers';
@@ -34,9 +34,13 @@ app.use('/users', users);
 app.use('/classes', classes);
 app.use('/lessons', lessons);
 
+app.use((req, res, next) => {
+    next(new NotFoundError(`Method: ${req.method}, Endpoint: ${req.url} - Not Found`));
+});
+
 app.use((error, req, res, next) => {
     fileLogger(error);
-    res.status(500).json({ message: error.message });
+    res.status(error.statusCode || 500).json({ message: error.message });
 });
 
 process.on('unhandledRejection', (error, promise) => {
