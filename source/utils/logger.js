@@ -1,7 +1,7 @@
 // Core
 import winston from 'winston';
 
-const logger = winston.createLogger({
+const log = winston.createLogger({
     level:      'debug',
     transports: [
         new winston.transports.Console({
@@ -11,3 +11,8 @@ const logger = winston.createLogger({
     ],
     exitOnError: false,
 });
+
+export const logger = (req, res, next) => {
+    log.debug(`${req.method} ${[ new Date() ]} \n ${JSON.stringify(req.body, null, 2)}`);
+    next();
+};
