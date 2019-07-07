@@ -8,7 +8,7 @@ import { getPort, NotFoundError } from './utils';
 
 // Routers
 import { auth, users, classes, lessons } from './routers';
-import { logger, fileLogger } from './utils';
+import { logger, fileLogger, notFoundLogger, validationLogger } from './utils';
 
 const PORT = getPort();
 const onSignal = () => {
@@ -39,7 +39,13 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-    fileLogger(error);
+    if (error.name === 'NotFoundError') {
+        notFoundLogger(req.method, req.url);
+    } else if (error.name === 'ValidationError') {
+        validationLogger(error, req);
+    } else {
+        fileLogger(error);
+    }
     res.status(error.statusCode || 500).json({ message: error.message });
 });
 
