@@ -1,16 +1,38 @@
 // Core
 import express from 'express';
 import { createTerminus } from '@godaddy/terminus';
+import session from 'express-session';
 
 // Instruments
 import { app, server } from './server';
-import { getPort, NotFoundError } from './utils';
+import {
+    getPort,
+    getPassword,
+    NotFoundError,
+    logger,
+    fileLogger,
+    notFoundLogger,
+    validationLogger,
+} from './utils';
 
 // Routers
 import { auth, users, classes, lessons } from './routers';
-import { logger, fileLogger, notFoundLogger, validationLogger } from './utils';
 
 const PORT = getPort();
+const PASSWORD = getPassword();
+
+const sessionOptions = {
+    key:               'user',
+    secret:            PASSWORD,
+    resave:            false,
+    rolling:           true,
+    saveUninitialized: false,
+    cookie:            {
+        httpOnly: true,
+        maxAge:   15 * 60 * 1000,
+    },
+};
+
 const onSignal = () => {
     return Promise.all([ server.close() ]);
 };
@@ -24,15 +46,16 @@ const options = {
 };
 
 app.use(express.json({ limit: '10kb' }));
+app.use(session(sessionOptions));
 
 if (process.env.NODE_ENV === 'development') {
     app.use(logger);
 }
 
-app.use('/', auth);
-app.use('/users', users);
-app.use('/classes', classes);
-app.use('/lessons', lessons);
+app.use('/api/auth', auth);
+app.use('/api/users', users);
+app.use('/api/classes', classes);
+app.use('/api/lessons', lessons);
 
 app.use((req, res, next) => {
     next(new NotFoundError(`Method: ${req.method}, Endpoint: ${req.url} - Not Found`));

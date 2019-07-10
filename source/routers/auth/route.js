@@ -1,6 +1,9 @@
 export const postLogin = (req, res) => {
     try {
         const authorization = req.get('authorization');
+        const { email } = req.body;
+
+        req.session.email = email;
 
         if (authorization) {
             res.status(204).end();
