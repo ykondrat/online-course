@@ -2,6 +2,8 @@
 import express from 'express';
 import { createTerminus } from '@godaddy/terminus';
 import session from 'express-session';
+import passport from 'passport';
+import { Strategy, ExtractJwt } from 'passport-jwt';
 
 // Instruments
 import { app, server } from './server';
@@ -32,7 +34,10 @@ const sessionOptions = {
         maxAge:   15 * 60 * 1000,
     },
 };
-
+const passportJwtOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey:    'secret',
+};
 const onSignal = () => {
     return Promise.all([ server.close() ]);
 };
@@ -47,6 +52,9 @@ const options = {
 
 app.use(express.json({ limit: '10kb' }));
 app.use(session(sessionOptions));
+passport.use(new Strategy(passportJwtOptions, function(jwt_payload, done) {
+    return done(null, false);
+}));
 
 if (process.env.NODE_ENV === 'development') {
     app.use(logger);
