@@ -4,3 +4,5 @@ export { logger, fileLogger, notFoundLogger, validationLogger } from './loggers'
 export { limiter } from './limiter';
 export { validator } from './validator';
 export { authorization } from './authorization';
+export { authentication } from './authentication';
+export { sessionOptions, corsOptions, passportJwtOptions } from './options';
