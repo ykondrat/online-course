@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 // Instruments
 import { getPassword } from './env';
 
-export const authentication = () => async (req, res, next) => {
+export const authentication = async (req, res, next) => {
     const { authorization } = req.headers;
     const PASSWORD = getPassword();
 

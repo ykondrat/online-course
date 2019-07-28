@@ -11,4 +11,5 @@
 DEBUG='server:*,router:*'
 PORT=3000
 DB=your_db
+PASSWORD='supperstrongpassword'
 ```

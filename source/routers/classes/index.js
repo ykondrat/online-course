@@ -1,6 +1,5 @@
 // Core
 import express from 'express';
-import passport from 'passport';
 
 // Instruments
 import { get, post, enroll, expel } from './route';
@@ -14,13 +13,13 @@ export const router = express.Router();
 const password = getPassword();
 
 router.get('/', get);
-router.post('/', [ passport.authenticate('jwt', { session: false }), authorization(password), validator(createClass) ], post);
+router.post('/', [ authorization(password), validator(createClass) ], post);
 
-router.get('/:classHash', [ passport.authenticate('jwt', { session: false }), authorization(password) ], getByHash);
-router.put('/:classHash', [ passport.authenticate('jwt', { session: false }), authorization(password), validator(createClass) ], putByHash);
-router.delete('/:classHash', [ passport.authenticate('jwt', { session: false }), authorization(password) ], deleteByHash);
+router.get('/:classHash', [ authorization(password) ], getByHash);
+router.put('/:classHash', [ authorization(password), validator(createClass) ], putByHash);
+router.delete('/:classHash', [ authorization(password) ], deleteByHash);
 
-router.post('/enroll', [ passport.authenticate('jwt', { session: false }), authorization(password), validator(enrollStudent) ], enroll);
-router.post('/expel', [ passport.authenticate('jwt', { session: false }), authorization(password), validator(expelStudent) ], expel);
+router.post('/enroll', [ authorization(password), validator(enrollStudent) ], enroll);
+router.post('/expel', [ authorization(password), validator(expelStudent) ], expel);
 
 export { router as classes };
