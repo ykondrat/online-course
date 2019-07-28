@@ -1,11 +1,10 @@
 export const postLogin = (req, res) => {
     try {
-        const authorization = req.get('authorization');
-        const { email } = req.body;
+        const { email, password } = req.body;
 
         req.session.email = email;
 
-        if (authorization) {
+        if (email && password) {
             res.status(204).end();
         } else {
             res.status(400).json({ message: 'incorrect payload' });
@@ -17,13 +16,7 @@ export const postLogin = (req, res) => {
 
 export const postLogout = (req, res) => {
     try {
-        const isAuthorized = true;
-
-        if (isAuthorized) {
-            res.status(204).end();
-        } else {
-            res.status(401).json({ message: 'not authenticated' });
-        }
+        res.status(204).end();
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

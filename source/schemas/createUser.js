@@ -10,8 +10,7 @@ export const createUser = {
             format: 'email',
         },
         phone: {
-            type:    'string',
-            pattern: '^\\+380[0-9]{9}$/g',
+            type: 'string',
         },
         password: {
             type:      'string',

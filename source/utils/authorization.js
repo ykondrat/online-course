@@ -9,7 +9,7 @@ export const authorization = (password) => async (req, res, next) => {
     const token = req.headers[ 'x-token' ];
     const PASSWORD = getPassword();
 
-    if (authorization === password && req.session.email) {
+    if (authorization === password) {
         try {
             await jwt.verify(token, PASSWORD);
             next();

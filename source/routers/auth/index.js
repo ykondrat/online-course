@@ -1,6 +1,5 @@
 // Core
 import express from 'express';
-import passport from 'passport';
 
 // Instruments
 import { postLogin, postLogout } from './route';
@@ -10,6 +9,6 @@ export const router = express.Router();
 const password = getPassword();
 
 router.post('/login', [ authentication ], postLogin);
-router.post('/logout', [ passport.authenticate('jwt', { session: false }), authorization(password) ], postLogout);
+router.post('/logout', [ authorization(password) ], postLogout);
 
 export { router as auth };
