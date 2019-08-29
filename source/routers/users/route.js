@@ -1,16 +1,22 @@
-export const get = (req, res) => {
-    try {
-        const data = [];
+// Instruments
+import { UsersController } from '../../controllers';
 
-        res.status(200).json({ data });
+export const get = async (req, res) => {
+    try {
+        const { page = 1, size = 10 } = req.query;
+        const model = new UsersController({ page, size });
+        const data = await model.getAll();
+
+        res.status(200).json({ ...data });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-export const post = (req, res) => {
+export const post = async (req, res) => {
     try {
-        const data = {};
+        const model = new UsersController(req.body);
+        const data = await model.create();
 
         res.status(201).json({ data });
     } catch (error) {
