@@ -40,8 +40,12 @@ const schema = new mongoose.Schema(
             videos:   [ contentSchema ],
             keynotes: [ contentSchema ],
         },
-        created:  Date,
-        modified: Date,
+    },
+    {
+        timestamp: {
+            createdAt: 'created',
+            updatedAt: 'modified',
+        },
     },
 );
 
