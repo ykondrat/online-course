@@ -64,8 +64,12 @@ const schema = new mongoose.Schema(
             default:  () => v4(),
         },
         disabled: Boolean,
-        created:  Date,
-        modified: Date,
+    },
+    {
+        timestamp: {
+            createdAt: 'created',
+            updatedAt: 'modified',
+        },
     },
 );
 

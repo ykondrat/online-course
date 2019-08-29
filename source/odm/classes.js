@@ -50,9 +50,13 @@ const schema = new mongoose.Schema(
                 required: true,
             },
         },
-        order:    Number,
-        created:  Date,
-        modified: Date,
+        order: Number,
+    },
+    {
+        timestamp: {
+            createdAt: 'created',
+            updatedAt: 'modified',
+        },
     },
 );
 
