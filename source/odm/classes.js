@@ -27,6 +27,7 @@ const schema = new mongoose.Schema(
         hash:        {
             type:     String,
             required: true,
+            unique:   true,
             default:  () => v4(),
         },
         students: [ studentSchema ],
@@ -49,10 +50,30 @@ const schema = new mongoose.Schema(
                 required: true,
             },
         },
-        order:    Number,
-        created:  Date,
-        modified: Date,
+        order: Number,
+    },
+    {
+        timestamp: {
+            createdAt: 'created',
+            updatedAt: 'modified',
+        },
     },
 );
 
-export const classes = mongoose.model('classes', schema);
+schema.index({
+    title:       'text',
+    description: 'text',
+}, {
+    name: 'titleDescription',
+});
+schema.index({
+    order: 1,
+}, {
+    name: 'order',
+});
+
+const classes = mongoose.model('classes', schema);
+
+classes.createIndexes();
+
+export { classes };
