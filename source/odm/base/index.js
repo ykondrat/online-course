@@ -49,42 +49,12 @@ const schema = new mongoose.Schema(
             enum:     [ 'm', 'f' ],
             required: true,
         },
-        roles: [
-            {
-                type:    String,
-                default: 'newbie',
-                enum:    [ 'newbie', 'student', 'teacher' ],
-            },
-        ],
-        socials: {
-            facebook: {
-                type:  String,
-                match: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
-            },
-            linkedin: {
-                type:  String,
-                match: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
-            },
-            github: {
-                type:  String,
-                match: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
-            },
-            skype: {
-                type:  String,
-                match: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
-            },
-        },
-        notes: {
-            type:      String,
-            maxlength: 250,
-        },
         hash: {
             type:     String,
             required: true,
             unique:   true,
             default:  () => v4(),
         },
-        disabled: Boolean,
     },
     {
         timestamp: {
@@ -106,8 +76,8 @@ schema.index({
     name: 'notes',
 });
 
-const users = mongoose.model('users', schema);
+const user = mongoose.model('user', schema);
 
-users.createIndexes();
+user.createIndexes();
 
-export { users };
+export { user };
