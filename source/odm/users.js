@@ -6,12 +6,16 @@ const schema = new mongoose.Schema(
     {
         name: {
             first: {
-                type:     String,
-                required: true,
+                type:      String,
+                required:  true,
+                minlength: 2,
+                maxlength: 15,
             },
             last: {
-                type:     String,
-                required: true,
+                type:      String,
+                required:  true,
+                minlength: 2,
+                maxlength: 15,
             },
         },
         phones: [
@@ -29,14 +33,16 @@ const schema = new mongoose.Schema(
                     type:     String,
                     required: true,
                     unique:   true,
+                    match:    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 },
                 primary: Boolean,
             },
         ],
         password: {
-            type:     String,
-            select:   false,
-            required: true,
+            type:      String,
+            select:    false,
+            minlength: 10,
+            required:  true,
         },
         sex: {
             type:     String,
@@ -51,13 +57,28 @@ const schema = new mongoose.Schema(
             },
         ],
         socials: {
-            facebook: String,
-            linkedin: String,
-            github:   String,
-            skype:    String,
+            facebook: {
+                type:  String,
+                match: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
+            },
+            linkedin: {
+                type:  String,
+                match: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
+            },
+            github: {
+                type:  String,
+                match: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
+            },
+            skype: {
+                type:  String,
+                match: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
+            },
         },
-        notes: String,
-        hash:  {
+        notes: {
+            type:      String,
+            maxlength: 250,
+        },
+        hash: {
             type:     String,
             required: true,
             unique:   true,
